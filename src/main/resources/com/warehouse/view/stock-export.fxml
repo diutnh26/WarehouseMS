@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.warehouse.controller.StockExportController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Stock Export" styleClass="page-title"/>
+
+    <SplitPane dividerPositions="0.45" VBox.vgrow="ALWAYS">
+        <VBox spacing="8">
+            <Label text="Export History" styleClass="section-label"/>
+            <TableView fx:id="tblExports" prefHeight="250">
+                <columns>
+                    <TableColumn fx:id="colExportId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colDate" text="Date" prefWidth="120"/>
+                    <TableColumn fx:id="colReason" text="Reason" prefWidth="150"/>
+                    <TableColumn fx:id="colCreatedBy" text="Created By" prefWidth="120"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+        <VBox spacing="10">
+            <padding><Insets top="10" right="15" bottom="10" left="15"/></padding>
+            <Label text="New Export" styleClass="section-label"/>
+
+            <GridPane hgap="10" vgap="8">
+                <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <DatePicker fx:id="dpExportDate" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                <Label text="Reason:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="txtReason" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="200" promptText="e.g. Customer sale, Internal use"/>
+
+                <Label text="Notes:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <TextArea fx:id="txtNotes" GridPane.columnIndex="1" GridPane.rowIndex="2" prefHeight="40"/>
+            </GridPane>
+
+            <Separator/>
+
+            <Label text="Add Product Line:" styleClass="section-label"/>
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <ComboBox fx:id="cmbProduct" promptText="Select product" prefWidth="200"/>
+                <TextField fx:id="txtQuantity" promptText="Qty" prefWidth="80"/>
+                <Button text="+ Add" onAction="#handleAddLine" styleClass="btn-primary"/>
+                <Button text="- Remove" onAction="#handleRemoveLine" styleClass="btn-danger"/>
+            </HBox>
+
+            <TableView fx:id="tblDetails" prefHeight="150" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colDetailProduct" text="Product" prefWidth="250"/>
+                    <TableColumn fx:id="colDetailQty" text="Quantity" prefWidth="100"/>
+                </columns>
+            </TableView>
+
+            <HBox spacing="10">
+                <Button text="Save Export" onAction="#handleSaveExport" styleClass="btn-primary"/>
+                <Button text="Clear" onAction="#handleClear" styleClass="btn-secondary"/>
+            </HBox>
+        </VBox>
+    </SplitPane>
+</VBox>

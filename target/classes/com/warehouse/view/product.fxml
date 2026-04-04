@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.warehouse.controller.ProductController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Product Management" styleClass="page-title"/>
+
+    <!-- Search bar -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Search:"/>
+        <TextField fx:id="txtSearch" promptText="Search by code or name..." prefWidth="300"/>
+    </HBox>
+
+    <!-- Data table -->
+    <TableView fx:id="tblProducts" VBox.vgrow="ALWAYS" prefHeight="300">
+        <columns>
+            <TableColumn fx:id="colCode" text="Code" prefWidth="90"/>
+            <TableColumn fx:id="colName" text="Product Name" prefWidth="200"/>
+            <TableColumn fx:id="colCategory" text="Category" prefWidth="120"/>
+            <TableColumn fx:id="colUnit" text="Unit" prefWidth="70"/>
+            <TableColumn fx:id="colMinStock" text="Min Stock" prefWidth="80"/>
+            <TableColumn fx:id="colCurrentQty" text="Current Qty" prefWidth="90"/>
+        </columns>
+    </TableView>
+
+    <!-- Form -->
+    <TitledPane text="Product Details" collapsible="false">
+        <GridPane hgap="10" vgap="10">
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+            <Label text="Product Code:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="txtProductCode" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200"/>
+
+            <Label text="Product Name:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <TextField fx:id="txtProductName" GridPane.columnIndex="3" GridPane.rowIndex="0" prefWidth="250"/>
+
+            <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <ComboBox fx:id="cmbCategory" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="200"/>
+
+            <Label text="Unit:" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+            <TextField fx:id="txtUnit" GridPane.columnIndex="3" GridPane.rowIndex="1" promptText="Piece" prefWidth="250"/>
+
+            <Label text="Min Stock Level:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <TextField fx:id="txtMinStockLevel" GridPane.columnIndex="1" GridPane.rowIndex="2" promptText="10"/>
+
+            <Label text="Description:" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+            <TextArea fx:id="txtDescription" GridPane.columnIndex="3" GridPane.rowIndex="2" prefHeight="60" prefWidth="250"/>
+        </GridPane>
+    </TitledPane>
+
+    <!-- Action buttons -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="Add" onAction="#handleAdd" styleClass="btn-primary"/>
+        <Button text="Update" onAction="#handleUpdate" styleClass="btn-primary"/>
+        <Button text="Delete" onAction="#handleDelete" styleClass="btn-danger"/>
+        <Button text="Clear" onAction="#handleClear" styleClass="btn-secondary"/>
+    </HBox>
+</VBox>

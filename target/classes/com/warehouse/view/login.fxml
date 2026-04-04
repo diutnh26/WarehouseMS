@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="20" styleClass="login-container"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.warehouse.controller.LoginController">
+
+    <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
+    <Label text="WMS." styleClass="login-title" style="-fx-font-size: 48px; -fx-font-weight: bold; -fx-text-fill: rgb(31, 78, 153);"/>
+    <Label text="Warehouse Management System" styleClass="login-subtitle" style="-fx-font-style: italic; -fx-text-fill: #df672c; -fx-padding: -20 0 20 0;"/>
+
+    <VBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="USERNAME" styleClass="form-label"/>
+        <TextField fx:id="txtUsername" promptText="Enter your username" prefWidth="260"/>
+
+        <Label text="PASSWORD" styleClass="form-label"/>
+        <PasswordField fx:id="txtPassword" promptText="Enter your password" prefWidth="260"
+                        onAction="#handleLogin"/>
+
+        <Label fx:id="lblError" styleClass="error-label" text=""/>
+    </VBox>
+
+    <Button text="Sign In" onAction="#handleLogin" styleClass="btn-primary" prefWidth="260"/>
+
+</VBox>

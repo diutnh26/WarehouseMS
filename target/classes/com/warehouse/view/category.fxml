@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.warehouse.controller.CategoryController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Category Management" styleClass="page-title"/>
+
+    <TableView fx:id="tblCategories" VBox.vgrow="ALWAYS" prefHeight="300">
+        <columns>
+            <TableColumn fx:id="colName" text="Category Name" prefWidth="200"/>
+            <TableColumn fx:id="colDescription" text="Description" prefWidth="400"/>
+        </columns>
+    </TableView>
+
+    <TitledPane text="Category Details" collapsible="false">
+        <HBox spacing="15">
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+            <VBox spacing="5">
+                <Label text="Category Name:"/>
+                <TextField fx:id="txtCategoryName" prefWidth="250"/>
+            </VBox>
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="Description:"/>
+                <TextArea fx:id="txtDescription" prefHeight="50"/>
+            </VBox>
+        </HBox>
+    </TitledPane>
+
+    <HBox spacing="10">
+        <Button text="Add" onAction="#handleAdd" styleClass="btn-primary"/>
+        <Button text="Update" onAction="#handleUpdate" styleClass="btn-primary"/>
+        <Button text="Delete" onAction="#handleDelete" styleClass="btn-danger"/>
+        <Button text="Clear" onAction="#handleClear" styleClass="btn-secondary"/>
+    </HBox>
+</VBox>

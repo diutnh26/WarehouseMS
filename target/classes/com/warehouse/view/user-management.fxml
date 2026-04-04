@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.warehouse.controller.UserManagementController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="User Management" styleClass="page-title"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Search:"/>
+        <TextField fx:id="txtSearch" promptText="Search users..." prefWidth="300"/>
+    </HBox>
+
+    <TableView fx:id="tblUsers" VBox.vgrow="ALWAYS" prefHeight="280">
+        <columns>
+            <TableColumn fx:id="colUsername" text="Username" prefWidth="110"/>
+            <TableColumn fx:id="colFullName" text="Full Name" prefWidth="150"/>
+            <TableColumn fx:id="colEmail" text="Email" prefWidth="160"/>
+            <TableColumn fx:id="colPhone" text="Phone" prefWidth="110"/>
+            <TableColumn fx:id="colRole" text="Role" prefWidth="80"/>
+            <TableColumn fx:id="colActive" text="Active" prefWidth="60"/>
+        </columns>
+    </TableView>
+
+    <TitledPane text="User Details" collapsible="false">
+        <GridPane hgap="10" vgap="10">
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+            <Label text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="txtUsername" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200"/>
+
+            <Label text="Password:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <PasswordField fx:id="txtPassword" GridPane.columnIndex="3" GridPane.rowIndex="0" promptText="Leave blank to keep" prefWidth="200"/>
+
+            <Label text="Full Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="txtFullName" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label text="Email:" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+            <TextField fx:id="txtEmail" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+
+            <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <TextField fx:id="txtPhone" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+            <Label text="Role:" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+            <ComboBox fx:id="cmbRole" GridPane.columnIndex="3" GridPane.rowIndex="2" prefWidth="200"/>
+
+            <CheckBox fx:id="chkActive" text="Active" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        </GridPane>
+    </TitledPane>
+
+    <HBox spacing="10">
+        <Button text="Add" onAction="#handleAdd" styleClass="btn-primary"/>
+        <Button text="Update" onAction="#handleUpdate" styleClass="btn-primary"/>
+        <Button text="Delete" onAction="#handleDelete" styleClass="btn-danger"/>
+        <Button text="Clear" onAction="#handleClear" styleClass="btn-secondary"/>
+    </HBox>
+</VBox>
