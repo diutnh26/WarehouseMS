@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
@@ -44,25 +45,108 @@ public class ReportController implements Initializable {
         try {
             cmbProduct.setItems(FXCollections.observableArrayList(productService.getAllProducts()));
         } catch (Exception e) { AlertUtil.showError("Error", e.getMessage()); }
+
     }
 
-    private void setupMovementColumns() {
-        tblMovementReport.getColumns().clear();
-        addStringColumn(tblMovementReport, "Type", "TransactionType", 80);
-        addStringColumn(tblMovementReport, "Date", "TransactionDate", 140);
-        addStringColumn(tblMovementReport, "Supplier", "SupplierName", 140);
-        addStringColumn(tblMovementReport, "Product Code", "ProductCode", 100);
-        addStringColumn(tblMovementReport, "Product Name", "ProductName", 160);
-        addStringColumn(tblMovementReport, "Quantity", "Quantity", 80);
-        addStringColumn(tblMovementReport, "Unit Price", "UnitPrice", 100);
-        addStringColumn(tblMovementReport, "Line Total", "LineTotal", 100);
-        addStringColumn(tblMovementReport, "Created By", "CreatedBy", 120);
-    }
+        private void setupMovementColumns() {
+            tblMovementReport.getColumns().clear();
 
-    private void setupHistoryColumns() {
+            // Type column with colored badges
+            TableColumn<Map<String, Object>, String> colType = new TableColumn<>("Type");
+            colType.setPrefWidth(100);
+            colType.setCellValueFactory(cellData -> {
+                Object val = cellData.getValue().get("TransactionType");
+                return new SimpleStringProperty(val != null ? val.toString() : "");
+            });
+            colType.setCellFactory(col -> new TableCell<>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        Label badge = new Label(item);
+                        badge.setStyle(
+                            "-fx-padding: 3 12; -fx-background-radius: 20; -fx-font-size: 11px; -fx-font-weight: bold;" +
+                            (item.equalsIgnoreCase("Import")
+                                ? "-fx-background-color: rgba(59,130,246,0.15); -fx-text-fill: #3B82F6;"
+                                : "-fx-background-color: rgba(239,68,68,0.15); -fx-text-fill: #EF4444;")
+                        );
+                        setGraphic(badge);
+                        setText(null);
+                    }
+                }
+            });
+            tblMovementReport.getColumns().add(colType);
+
+            // Date column — clean format
+            TableColumn<Map<String, Object>, String> colDate = new TableColumn<>("Date");
+            colDate.setPrefWidth(110);
+            colDate.setCellValueFactory(cellData -> {
+                Object val = cellData.getValue().get("TransactionDate");
+                if (val != null) {
+                    String s = val.toString();
+                    return new SimpleStringProperty(s.length() >= 10 ? s.substring(0, 10) : s);
+                }
+                return new SimpleStringProperty("");
+            });
+            tblMovementReport.getColumns().add(colDate);
+
+            addStringColumn(tblMovementReport, "Supplier", "SupplierName", 160);
+            addStringColumn(tblMovementReport, "Code", "ProductCode", 100);
+            addStringColumn(tblMovementReport, "Product", "ProductName", 200);
+            addStringColumn(tblMovementReport, "Qty", "Quantity", 70);
+            addStringColumn(tblMovementReport, "Unit Price", "UnitPrice", 120);
+            addStringColumn(tblMovementReport, "Total", "LineTotal", 130);
+            addStringColumn(tblMovementReport, "By", "CreatedBy", 130);
+        }
+
+        private void setupHistoryColumns() {
         tblProductHistory.getColumns().clear();
-        addStringColumn(tblProductHistory, "Type", "TransactionType", 80);
-        addStringColumn(tblProductHistory, "Date", "TransactionDate", 140);
+
+        // Type column with colored badges
+        TableColumn<Map<String, Object>, String> colType = new TableColumn<>("Type");
+        colType.setPrefWidth(100);
+        colType.setCellValueFactory(cellData -> {
+            Object val = cellData.getValue().get("TransactionType");
+            return new SimpleStringProperty(val != null ? val.toString() : "");
+        });
+        colType.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    Label badge = new Label(item);
+                    badge.setStyle(
+                        "-fx-padding: 3 12; -fx-background-radius: 20; -fx-font-size: 11px; -fx-font-weight: bold;" +
+                        (item.equalsIgnoreCase("Import")
+                            ? "-fx-background-color: rgba(59,130,246,0.15); -fx-text-fill: #3B82F6;"
+                            : "-fx-background-color: rgba(239,68,68,0.15); -fx-text-fill: #EF4444;")
+                    );
+                    setGraphic(badge);
+                    setText(null);
+                }
+            }
+        });
+        tblProductHistory.getColumns().add(colType);
+
+        // Date column — clean format
+        TableColumn<Map<String, Object>, String> colDate = new TableColumn<>("Date");
+        colDate.setPrefWidth(110);
+        colDate.setCellValueFactory(cellData -> {
+            Object val = cellData.getValue().get("TransactionDate");
+            if (val != null) {
+                String s = val.toString();
+                return new SimpleStringProperty(s.length() >= 10 ? s.substring(0, 10) : s);
+            }
+            return new SimpleStringProperty("");
+        });
+        tblProductHistory.getColumns().add(colDate);
+
         addStringColumn(tblProductHistory, "Related Party", "RelatedParty", 160);
         addStringColumn(tblProductHistory, "Quantity", "Quantity", 80);
         addStringColumn(tblProductHistory, "Unit Price", "UnitPrice", 100);

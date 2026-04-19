@@ -1,56 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<VBox spacing="15" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.warehouse.controller.SupplierController">
-    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+<VBox spacing="16" xmlns:fx="http://javafx.com/fxml" fx:controller="com.warehouse.controller.SupplierController">
+    <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
 
-    <Label text="Supplier Management" styleClass="page-title"/>
+    <!-- Page Header -->
+    <VBox spacing="2">
+        <Label text="Suppliers" styleClass="page-title"/>
+        <Label text="Home / Suppliers" styleClass="breadcrumb-label"/>
+    </VBox>
 
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Search:"/>
-        <TextField fx:id="txtSearch" promptText="Search by name, contact, phone..." prefWidth="300"/>
-    </HBox>
+    <!-- Supplier List Card -->
+    <VBox styleClass="recent-card" VBox.vgrow="ALWAYS">
+        <HBox alignment="CENTER_LEFT" styleClass="card-title">
+            <Label text="Supplier List" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="txtSearch" promptText="Search suppliers..." prefWidth="250"
+                       style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #E2E5EF; -fx-padding: 8 14;"/>
+        </HBox>
 
-    <TableView fx:id="tblSuppliers" VBox.vgrow="ALWAYS" prefHeight="300">
-        <columns>
-            <TableColumn fx:id="colName" text="Supplier Name" prefWidth="180"/>
-            <TableColumn fx:id="colContact" text="Contact Person" prefWidth="140"/>
-            <TableColumn fx:id="colPhone" text="Phone" prefWidth="120"/>
-            <TableColumn fx:id="colEmail" text="Email" prefWidth="160"/>
-            <TableColumn fx:id="colAddress" text="Address" prefWidth="200"/>
-        </columns>
-    </TableView>
+        <TableView fx:id="tblSuppliers" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colName" text="Supplier Name" prefWidth="200"/>
+                <TableColumn fx:id="colContact" text="Contact Person" prefWidth="160"/>
+                <TableColumn fx:id="colPhone" text="Phone" prefWidth="140"/>
+                <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
+                <TableColumn fx:id="colAddress" text="Address" prefWidth="220"/>
+            </columns>
+        </TableView>
+    </VBox>
 
-    <TitledPane text="Supplier Details" collapsible="false">
-        <GridPane hgap="10" vgap="10">
-            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+    <!-- Supplier Details Form -->
+    <VBox spacing="16" styleClass="recent-card">
+        <Label text="Supplier Details" styleClass="card-title"
+               style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 16 20;"/>
 
-            <Label text="Supplier Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="txtSupplierName" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="250"/>
+        <VBox spacing="16" style="-fx-padding: 0 20 16 20;">
+            <!-- Row 1: Name, Contact Person -->
+            <HBox spacing="16">
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="SUPPLIER NAME" styleClass="form-label"/>
+                    <TextField fx:id="txtSupplierName"/>
+                </VBox>
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="CONTACT PERSON" styleClass="form-label"/>
+                    <TextField fx:id="txtContactPerson"/>
+                </VBox>
+            </HBox>
 
-            <Label text="Contact Person:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-            <TextField fx:id="txtContactPerson" GridPane.columnIndex="3" GridPane.rowIndex="0" prefWidth="200"/>
+            <!-- Row 2: Phone, Email -->
+            <HBox spacing="16">
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="PHONE" styleClass="form-label"/>
+                    <TextField fx:id="txtPhone"/>
+                </VBox>
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="EMAIL" styleClass="form-label"/>
+                    <TextField fx:id="txtEmail"/>
+                </VBox>
+            </HBox>
 
-            <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="txtPhone" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <!-- Row 3: Address (full width) -->
+            <VBox spacing="6">
+                <Label text="ADDRESS" styleClass="form-label"/>
+                <TextArea fx:id="txtAddress" prefRowCount="1" maxHeight="36"/>
+            </VBox>
 
-            <Label text="Email:" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-            <TextField fx:id="txtEmail" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-
-            <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <TextArea fx:id="txtAddress" GridPane.columnIndex="1" GridPane.rowIndex="2"
-                      GridPane.columnSpan="3" prefHeight="50"/>
-        </GridPane>
-    </TitledPane>
-
-    <HBox spacing="10">
-        <Button text="Add" onAction="#handleAdd" styleClass="btn-primary"/>
-        <Button text="Update" onAction="#handleUpdate" styleClass="btn-primary"/>
-        <Button text="Delete" onAction="#handleDelete" styleClass="btn-danger"/>
-        <Button text="Clear" onAction="#handleClear" styleClass="btn-secondary"/>
-    </HBox>
+            <!-- Buttons -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="Add" onAction="#handleAdd" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Update" onAction="#handleUpdate" styleClass="btn-primary"/>
+                <Button text="Delete" onAction="#handleDelete" styleClass="btn-danger"/>
+                <Button text="Clear" onAction="#handleClear" styleClass="btn-secondary"/>
+            </HBox>
+        </VBox>
+    </VBox>
 </VBox>

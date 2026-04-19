@@ -38,6 +38,7 @@ public class CategoryController implements Initializable {
         tblCategories.getSelectionModel().selectedItemProperty().addListener(
             (obs, o, n) -> { if (n != null) { selectedCategory = n; txtCategoryName.setText(n.getCategoryName()); txtDescription.setText(n.getDescription()); } }
         );
+        tblCategories.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         loadCategories();
     }
 

@@ -48,7 +48,60 @@ public class UserManagementController implements Initializable {
         colRole.setCellValueFactory(new PropertyValueFactory<>("role"));
         colActive.setCellValueFactory(new PropertyValueFactory<>("active"));
 
+        // Username: monospace font
+        colUsername.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) { setText(null); setStyle(""); }
+                else { setText(item); setStyle("-fx-font-family: 'Consolas'; -fx-font-weight: bold;"); }
+            }
+        });
+
+        // Role: colored badges
+        colRole.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null); setGraphic(null);
+                } else {
+                    String style;
+                    if ("Admin".equals(item)) {
+                        style = "-fx-background-color: rgba(239,68,68,0.15); -fx-text-fill: #EF4444;";
+                    } else if ("Staff".equals(item)) {
+                        style = "-fx-background-color: rgba(59,130,246,0.15); -fx-text-fill: #3B82F6;";
+                    } else {
+                        style = "-fx-background-color: rgba(245,158,11,0.15); -fx-text-fill: #F59E0B;";
+                    }
+                    Label badge = new Label(item);
+                    badge.setStyle(style + "-fx-padding: 3 10; -fx-background-radius: 20; -fx-font-size: 11px; -fx-font-weight: bold;");
+                    setGraphic(badge); setText(null);
+                }
+            }
+        });
+
+        // Status: Active badge
+        colActive.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null); setGraphic(null);
+                } else {
+                    String text = item ? "Active" : "Inactive";
+                    String style = item
+                        ? "-fx-background-color: rgba(16,185,129,0.15); -fx-text-fill: #10B981;"
+                        : "-fx-background-color: rgba(239,68,68,0.15); -fx-text-fill: #EF4444;";
+                    Label badge = new Label(text);
+                    badge.setStyle(style + "-fx-padding: 3 10; -fx-background-radius: 20; -fx-font-size: 11px; -fx-font-weight: bold;");
+                    setGraphic(badge); setText(null);
+                }
+            }
+        });
+
         tblUsers.setItems(userList);
+        tblUsers.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         cmbRole.setItems(FXCollections.observableArrayList("Admin", "Staff", "Manager"));
         chkActive.setSelected(true);
 

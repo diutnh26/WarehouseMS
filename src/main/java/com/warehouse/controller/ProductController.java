@@ -7,10 +7,12 @@ import com.warehouse.service.ProductService;
 import com.warehouse.util.AlertUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TableCell;
 
 import java.net.URL;
 import java.util.List;
@@ -26,6 +28,7 @@ public class ProductController implements Initializable {
     @FXML private TableColumn<Product, String> colUnit;
     @FXML private TableColumn<Product, Integer> colMinStock;
     @FXML private TableColumn<Product, Integer> colCurrentQty;
+    @FXML private TableColumn<Product, String> colStatus;
 
     // Form fields
     @FXML private TextField txtProductCode;
@@ -52,6 +55,69 @@ public class ProductController implements Initializable {
         colUnit.setCellValueFactory(new PropertyValueFactory<>("unit"));
         colMinStock.setCellValueFactory(new PropertyValueFactory<>("minStockLevel"));
         colCurrentQty.setCellValueFactory(new PropertyValueFactory<>("currentQuantity"));
+        // Status column with colored badges
+        colStatus.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getCurrentQuantity() + ""));
+        colStatus.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                    return;
+                }
+                int idx = getIndex();
+                if (idx < 0 || idx >= tblProducts.getItems().size()) {
+                    setText(null);
+                    setGraphic(null);
+                    return;
+                }
+                Product p = tblProducts.getItems().get(idx);
+                String status;
+                String style;
+                if (p.getCurrentQuantity() == 0) {
+                    status = "Out of Stock";
+                    style = "-fx-background-color: rgba(239,68,68,0.15); -fx-text-fill: #EF4444;";
+                } else if (p.isLowStock()) {
+                    status = "Low Stock";
+                    style = "-fx-background-color: rgba(245,158,11,0.15); -fx-text-fill: #F59E0B;";
+                } else {
+                    status = "In Stock";
+                    style = "-fx-background-color: rgba(16,185,129,0.15); -fx-text-fill: #10B981;";
+                }
+                Label badge = new Label(status);
+                badge.setStyle(style + "-fx-padding: 3 10; -fx-background-radius: 20; -fx-font-size: 11px; -fx-font-weight: bold;");
+                setGraphic(badge);
+                setText(null);
+            }
+        });
+
+        // Color-code Code column (blue for normal, red for out of stock)
+        colCode.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                    return;
+                }
+                setText(item);
+                int idx = getIndex();
+                if (idx >= 0 && idx < tblProducts.getItems().size()) {
+                    Product p = tblProducts.getItems().get(idx);
+                    if (p.getCurrentQuantity() == 0) {
+                        setStyle("-fx-text-fill: #EF4444; -fx-font-family: 'Consolas';");
+                    } else {
+                        setStyle("-fx-text-fill: #3B82F6; -fx-font-family: 'Consolas';");
+                    }
+                }
+            }
+        });
+
+        // Auto-resize columns
+        tblProducts.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         tblProducts.setItems(productList);
 

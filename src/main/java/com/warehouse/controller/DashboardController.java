@@ -22,11 +22,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+
  
 public class DashboardController implements Initializable {
- 
+
     @FXML private BorderPane contentArea;
     @FXML private Label lblUserName;
     @FXML private Label lblUserRole;
@@ -54,7 +56,8 @@ public class DashboardController implements Initializable {
  
     private final InventoryService inventoryService = new InventoryService();
     private final ReportService reportService = new ReportService();
- 
+    private javafx.scene.Node originalDashboardContent;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         lblUserName.setText(SessionManager.getCurrentUser().getFullName());
@@ -64,26 +67,93 @@ public class DashboardController implements Initializable {
         setupRecentActivityTable();
         refreshDashboardStats();
         loadRecentActivity();
+        // Save original dashboard content for restoration
+        originalDashboardContent = contentArea.getCenter();
     }
  
     @SuppressWarnings("unchecked")
     private void setupRecentActivityTable() {
         if (tblRecentActivity != null && tblRecentActivity.getColumns().size() >= 5) {
-            TableColumn<Map<String, Object>, String> colType = (TableColumn<Map<String, Object>, String>) tblRecentActivity.getColumns().get(0);
-            TableColumn<Map<String, Object>, String> colDate = (TableColumn<Map<String, Object>, String>) tblRecentActivity.getColumns().get(1);
-            TableColumn<Map<String, Object>, String> colProducts = (TableColumn<Map<String, Object>, String>) tblRecentActivity.getColumns().get(2);
-            TableColumn<Map<String, Object>, String> colCreatedBy = (TableColumn<Map<String, Object>, String>) tblRecentActivity.getColumns().get(3);
-            TableColumn<Map<String, Object>, String> colStatus = (TableColumn<Map<String, Object>, String>) tblRecentActivity.getColumns().get(4);
- 
+            TableColumn<Map<String, Object>, String> colType = 
+                (TableColumn<Map<String, Object>, String>) tblRecentActivity.getColumns().get(0);
+            TableColumn<Map<String, Object>, String> colDate = 
+                (TableColumn<Map<String, Object>, String>) tblRecentActivity.getColumns().get(1);
+            TableColumn<Map<String, Object>, String> colProducts = 
+                (TableColumn<Map<String, Object>, String>) tblRecentActivity.getColumns().get(2);
+            TableColumn<Map<String, Object>, String> colCreatedBy = 
+                (TableColumn<Map<String, Object>, String>) tblRecentActivity.getColumns().get(3);
+            TableColumn<Map<String, Object>, String> colStatus = 
+                (TableColumn<Map<String, Object>, String>) tblRecentActivity.getColumns().get(4);
+
+            // Type column: colored badge
             colType.setCellValueFactory(c -> new SimpleStringProperty(
-                c.getValue().get("TransactionType") != null ? c.getValue().get("TransactionType").toString() : ""));
-            colDate.setCellValueFactory(c -> new SimpleStringProperty(
-                c.getValue().get("TransactionDate") != null ? c.getValue().get("TransactionDate").toString() : ""));
+                c.getValue().get("TransactionType") != null ? 
+                c.getValue().get("TransactionType").toString() : ""));
+            colType.setCellFactory(col -> new TableCell<>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        Label badge = new Label(item);
+                        badge.setStyle(
+                            "-fx-padding: 3 12;" +
+                            "-fx-background-radius: 20;" +
+                            "-fx-font-size: 11px;" +
+                            "-fx-font-weight: bold;" +
+                            (item.equalsIgnoreCase("Import")
+                                ? "-fx-background-color: rgba(59,130,246,0.15); -fx-text-fill: #3B82F6;"
+                                : "-fx-background-color: rgba(239,68,68,0.15); -fx-text-fill: #EF4444;")
+                        );
+                        setGraphic(badge);
+                        setText(null);
+                    }
+                }
+            });
+
+            // Date column: clean date only
+            colDate.setCellValueFactory(c -> {
+                Object val = c.getValue().get("TransactionDate");
+                if (val != null) {
+                    String dateStr = val.toString();
+                    if (dateStr.length() >= 10) {
+                        dateStr = dateStr.substring(0, 10);
+                    }
+                    return new SimpleStringProperty(dateStr);
+                }
+                return new SimpleStringProperty("");
+            });
+
+            // Products column
             colProducts.setCellValueFactory(c -> new SimpleStringProperty(
-                c.getValue().get("ProductName") != null ? c.getValue().get("ProductName").toString() : ""));
+                c.getValue().get("ProductName") != null ? 
+                c.getValue().get("ProductName").toString() : ""));
+
+            // Created By column
             colCreatedBy.setCellValueFactory(c -> new SimpleStringProperty(
-                c.getValue().get("CreatedBy") != null ? c.getValue().get("CreatedBy").toString() : ""));
+                c.getValue().get("CreatedBy") != null ? 
+                c.getValue().get("CreatedBy").toString() : ""));
+
+            // Status column: green bold text
             colStatus.setCellValueFactory(c -> new SimpleStringProperty("Completed"));
+            colStatus.setCellFactory(col -> new TableCell<>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        setText(item);
+                        setStyle("-fx-text-fill: #10B981; -fx-font-weight: bold;");
+                    }
+                }
+            });
+
+            // Auto-resize columns to fill table width
+            tblRecentActivity.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         }
     }
  
@@ -143,8 +213,9 @@ public class DashboardController implements Initializable {
  
     @SuppressWarnings("unused") @FXML
     private void showDashboard() {
+        contentArea.setCenter(originalDashboardContent);
         refreshDashboardStats();
-        contentArea.setCenter(null); // Show the default dashboard content
+        loadRecentActivity();
     }
  
     @SuppressWarnings("unused") @FXML

@@ -411,6 +411,7 @@
     -fx-background-color: transparent;
     -fx-border-color: transparent transparent #E2E5EF transparent;
     -fx-border-width: 0 0 1 0;
+    -fx-alignment: CENTER_LEFT;
 }
 
 .table-view .column-header .label {
@@ -418,6 +419,7 @@
     -fx-font-weight: bold;
     -fx-text-fill: #94A3B8;
     -fx-padding: 8 12;
+    -fx-alignment: CENTER_LEFT;
 }
 
 .table-view .table-row-cell {

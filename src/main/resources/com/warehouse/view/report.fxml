@@ -1,44 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.*?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<VBox spacing="15" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.warehouse.controller.ReportController">
-    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+<VBox spacing="16" xmlns:fx="http://javafx.com/fxml" fx:controller="com.warehouse.controller.ReportController">
+    <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
 
-    <Label text="Reports" styleClass="page-title"/>
+    <!-- Page Header -->
+    <VBox spacing="2">
+        <Label text="Reports" styleClass="page-title"/>
+        <Label text="Home / Reports" styleClass="breadcrumb-label"/>
+    </VBox>
 
-    <TabPane VBox.vgrow="ALWAYS">
-        <!-- Tab 1: Movement Report by Date -->
-        <Tab text="Inventory Movement Report" closable="false">
-            <VBox spacing="10">
-                <padding><Insets top="15" right="10" bottom="10" left="10"/></padding>
+    <!-- Tab Bar -->
+    <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
 
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="From:"/>
-                    <DatePicker fx:id="dpStartDate"/>
-                    <Label text="To:"/>
-                    <DatePicker fx:id="dpEndDate"/>
-                    <Button text="Generate Report" onAction="#handleGenerateMovementReport" styleClass="btn-primary"/>
+        <!-- Tab 1: Inventory Movement Report -->
+        <Tab text="Inventory Movement Report">
+            <VBox spacing="16" style="-fx-padding: 16 0 0 0;">
+                <!-- Filter Row: From + To + Generate on same line -->
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Label text="From:" style="-fx-font-size: 13px; -fx-text-fill: #6B7A99;"/>
+                    <DatePicker fx:id="dpStartDate" prefWidth="160"/>
+                    <Label text="To:" style="-fx-font-size: 13px; -fx-text-fill: #6B7A99;"/>
+                    <DatePicker fx:id="dpEndDate" prefWidth="160"/>
+                    <Button text="Generate Report" onAction="#handleGenerateMovementReport"
+                            styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
                 </HBox>
 
-                <TableView fx:id="tblMovementReport" VBox.vgrow="ALWAYS"/>
+                <!-- Results Table -->
+                <VBox styleClass="recent-card" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="tblMovementReport" VBox.vgrow="ALWAYS"/>
+                </VBox>
             </VBox>
         </Tab>
 
         <!-- Tab 2: Product Movement History -->
-        <Tab text="Product Movement History" closable="false">
-            <VBox spacing="10">
-                <padding><Insets top="15" right="10" bottom="10" left="10"/></padding>
-
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Product:"/>
+        <Tab text="Product Movement History">
+            <VBox spacing="16" style="-fx-padding: 16 0 0 0;">
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Label text="Product:" style="-fx-font-size: 13px; -fx-text-fill: #6B7A99;"/>
                     <ComboBox fx:id="cmbProduct" prefWidth="300"/>
-                    <Button text="View History" onAction="#handleGenerateProductHistory" styleClass="btn-primary"/>
+                    <Button text="Generate History" onAction="#handleGenerateProductHistory"
+                            styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
                 </HBox>
 
-                <TableView fx:id="tblProductHistory" VBox.vgrow="ALWAYS"/>
+                <VBox styleClass="recent-card" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="tblProductHistory" VBox.vgrow="ALWAYS"/>
+                </VBox>
             </VBox>
         </Tab>
     </TabPane>

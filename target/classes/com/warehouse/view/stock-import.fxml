@@ -1,69 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.*?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<VBox spacing="10" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.warehouse.controller.StockImportController">
-    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+<VBox spacing="16" xmlns:fx="http://javafx.com/fxml" fx:controller="com.warehouse.controller.StockImportController">
+    <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
 
-    <Label text="Stock Import" styleClass="page-title"/>
+    <!-- Page Header -->
+    <VBox spacing="2">
+        <Label text="Stock Import" styleClass="page-title"/>
+        <Label text="Home / Transactions / Stock Import" styleClass="breadcrumb-label"/>
+    </VBox>
 
-    <SplitPane dividerPositions="0.45" VBox.vgrow="ALWAYS">
-        <!-- Left: Import history -->
-        <VBox spacing="8">
-            <Label text="Import History" styleClass="section-label"/>
-            <TableView fx:id="tblImports" prefHeight="250">
+    <!-- Split View -->
+    <HBox spacing="16" VBox.vgrow="ALWAYS">
+
+        <!-- Left: Import History -->
+        <VBox styleClass="recent-card" HBox.hgrow="ALWAYS">
+            <Label text="Import History" styleClass="card-title"
+                   style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 16 20;"/>
+            <TableView fx:id="tblImports" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="colImportId" text="ID" prefWidth="50"/>
-                    <TableColumn fx:id="colSupplier" text="Supplier" prefWidth="140"/>
+                    <TableColumn fx:id="colImportId" text="ID" prefWidth="60"/>
+                    <TableColumn fx:id="colSupplier" text="Supplier" prefWidth="150"/>
                     <TableColumn fx:id="colDate" text="Date" prefWidth="110"/>
-                    <TableColumn fx:id="colTotal" text="Total" prefWidth="100"/>
-                    <TableColumn fx:id="colCreatedBy" text="Created By" prefWidth="100"/>
+                    <TableColumn fx:id="colTotal" text="Total" prefWidth="120"/>
+                    <TableColumn fx:id="colCreatedBy" text="By" prefWidth="120"/>
                 </columns>
             </TableView>
         </VBox>
 
-        <!-- Right: New import form -->
-        <VBox spacing="10">
-            <padding><Insets top="10" right="15" bottom="10" left="15"/></padding>
-            <Label text="New Import" styleClass="section-label"/>
+        <!-- Right: New Import Form -->
+        <VBox spacing="0" styleClass="recent-card" prefWidth="500" minWidth="450">
+            <Label text="New Import" styleClass="card-title"
+                   style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 16 20;"/>
 
-            <GridPane hgap="10" vgap="8">
-                <Label text="Supplier:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                <ComboBox fx:id="cmbSupplier" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200"/>
+            <VBox spacing="14" style="-fx-padding: 0 20 10 20;">
+                <!-- Row: Supplier + Date -->
+                <HBox spacing="16">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="SUPPLIER" styleClass="form-label"/>
+                        <ComboBox fx:id="cmbSupplier" maxWidth="Infinity"/>
+                    </VBox>
+                    <VBox spacing="6" prefWidth="180">
+                        <Label text="IMPORT DATE" styleClass="form-label"/>
+                        <DatePicker fx:id="dpImportDate" maxWidth="Infinity"/>
+                    </VBox>
+                </HBox>
 
-                <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                <DatePicker fx:id="dpImportDate" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <!-- Notes -->
+                <VBox spacing="6">
+                    <Label text="NOTES" styleClass="form-label"/>
+                    <TextArea fx:id="txtNotes" promptText="Optional notes..." prefRowCount="1" maxHeight="36"/>
+                </VBox>
+            </VBox>
 
-                <Label text="Notes:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                <TextArea fx:id="txtNotes" GridPane.columnIndex="1" GridPane.rowIndex="2" prefHeight="40"/>
-            </GridPane>
+            <!-- Add Product Line -->
+            <VBox spacing="8" style="-fx-padding: 10 20; -fx-background-color: #F1F5F9;">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <VBox spacing="4" prefWidth="230">
+                        <Label text="PRODUCT" styleClass="form-label" style="-fx-font-size: 10px;"/>
+                        <ComboBox fx:id="cmbProduct" maxWidth="Infinity"/>
+                    </VBox>
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="QTY" styleClass="form-label" style="-fx-font-size: 10px;"/>
+                        <TextField fx:id="txtQuantity"/>
+                    </VBox>
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="UNIT PRICE" styleClass="form-label" style="-fx-font-size: 10px;"/>
+                        <TextField fx:id="txtUnitPrice"/>
+                    </VBox>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="+ Add" onAction="#handleAddLine"
+                            style="-fx-background-color: #10B981; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20; -fx-background-radius: 6; -fx-cursor: hand;"/>
+                    <Button text="- Remove" onAction="#handleRemoveLine"
+                            style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20; -fx-background-radius: 6; -fx-cursor: hand;"/>
+                </HBox>
+            </VBox>
 
-            <Separator/>
-
-            <Label text="Add Product Line:" styleClass="section-label"/>
-            <HBox spacing="8" alignment="CENTER_LEFT">
-                <ComboBox fx:id="cmbProduct" promptText="Select product" prefWidth="180"/>
-                <TextField fx:id="txtQuantity" promptText="Qty" prefWidth="70"/>
-                <TextField fx:id="txtUnitPrice" promptText="Unit Price" prefWidth="100"/>
-                <Button text="+ Add" onAction="#handleAddLine" styleClass="btn-primary"/>
-                <Button text="- Remove" onAction="#handleRemoveLine" styleClass="btn-danger"/>
-            </HBox>
-
-            <TableView fx:id="tblDetails" prefHeight="150" VBox.vgrow="ALWAYS">
+            <!-- Detail Table -->
+            <TableView fx:id="tblDetails" VBox.vgrow="ALWAYS" prefHeight="200">
                 <columns>
                     <TableColumn fx:id="colDetailProduct" text="Product" prefWidth="180"/>
                     <TableColumn fx:id="colDetailQty" text="Qty" prefWidth="60"/>
-                    <TableColumn fx:id="colDetailPrice" text="Unit Price" prefWidth="90"/>
-                    <TableColumn fx:id="colDetailTotal" text="Total" prefWidth="90"/>
+                    <TableColumn fx:id="colDetailPrice" text="Unit Price" prefWidth="110"/>
+                    <TableColumn fx:id="colDetailTotal" text="Total" prefWidth="110"/>
                 </columns>
             </TableView>
 
-            <HBox spacing="10">
-                <Button text="Save Import" onAction="#handleSaveImport" styleClass="btn-primary"/>
+            <!-- Save / Clear -->
+            <HBox spacing="10" style="-fx-padding: 12 20;">
+                <Button text="Save Import" onAction="#handleSaveImport" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
                 <Button text="Clear" onAction="#handleClear" styleClass="btn-secondary"/>
             </HBox>
         </VBox>
-    </SplitPane>
+    </HBox>
 </VBox>

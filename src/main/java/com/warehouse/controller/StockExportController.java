@@ -57,6 +57,8 @@ public class StockExportController implements Initializable {
         });
 
         dpExportDate.setValue(LocalDate.now());
+        tblExports.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tblDetails.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         loadComboBoxes();
         loadExports();
     }

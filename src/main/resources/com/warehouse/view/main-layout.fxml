@@ -63,27 +63,27 @@
                     </HBox>
 
                     <HBox spacing="16" alignment="CENTER_LEFT">
-                        <VBox styleClass="stat-card stat-card-blue" alignment="CENTER" HBox.hgrow="ALWAYS">
+                        <VBox styleClass="stat-card-blue" alignment="CENTER" HBox.hgrow="ALWAYS">
                             <Label text="PRODUCTS" styleClass="stat-label"/>
                             <Label fx:id="lblTotalProducts" text="0" styleClass="stat-value"/>
                             <Label text="Active items" styleClass="stat-sub"/>
                         </VBox>
-                        <VBox styleClass="stat-card stat-card-green" alignment="CENTER" HBox.hgrow="ALWAYS">
+                        <VBox styleClass="stat-card-green" alignment="CENTER" HBox.hgrow="ALWAYS">
                             <Label text="SUPPLIERS" styleClass="stat-label"/>
                             <Label fx:id="lblTotalSuppliers" text="0" styleClass="stat-value"/>
                             <Label text="Active partners" styleClass="stat-sub"/>
                         </VBox>
-                        <VBox styleClass="stat-card stat-card-red" alignment="CENTER" HBox.hgrow="ALWAYS">
+                        <VBox styleClass="stat-card-red" alignment="CENTER" HBox.hgrow="ALWAYS">
                             <Label text="LOW STOCK" styleClass="stat-label"/>
                             <Label fx:id="lblLowStock" text="0" styleClass="stat-value"/>
                             <Label text="Need restock" styleClass="stat-sub-danger"/>
                         </VBox>
-                        <VBox styleClass="stat-card stat-card-yellow" alignment="CENTER" HBox.hgrow="ALWAYS">
+                        <VBox styleClass="stat-card-yellow" alignment="CENTER" HBox.hgrow="ALWAYS">
                             <Label text="TODAY IMPORTS" styleClass="stat-label"/>
                             <Label fx:id="lblTodayImports" text="0" styleClass="stat-value"/>
                             <Label text="Transactions" styleClass="stat-sub"/>
                         </VBox>
-                        <VBox styleClass="stat-card stat-card-purple" alignment="CENTER" HBox.hgrow="ALWAYS">
+                        <VBox styleClass="stat-card-purple" alignment="CENTER" HBox.hgrow="ALWAYS">
                             <Label text="TODAY EXPORTS" styleClass="stat-label"/>
                             <Label fx:id="lblTodayExports" text="0" styleClass="stat-value"/>
                             <Label text="Transactions" styleClass="stat-sub"/>

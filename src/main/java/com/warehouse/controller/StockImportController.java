@@ -76,6 +76,8 @@ public class StockImportController implements Initializable {
 
         dpImportDate.setValue(LocalDate.now());
 
+        tblImports.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tblDetails.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         loadComboBoxes();
         loadImports();
     }

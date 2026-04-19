@@ -47,6 +47,7 @@ public class SupplierController implements Initializable {
         );
 
         txtSearch.textProperty().addListener((obs, o, n) -> handleSearch());
+        tblSuppliers.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         loadSuppliers();
     }
 
